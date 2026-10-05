@@ -1,0 +1,9 @@
+node_modules/
+数据/
+运行时/
+assets/webm/
+assets/fonts/
+*.log
+*.dat
+*.exe
+*.zip

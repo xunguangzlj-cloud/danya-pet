@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><title>调整大小</title>
+<style>body{background:#141a29;margin:0}.pet-size-editor{position:absolute;inset:0;margin:auto}.pet-size-editor::backdrop{background:transparent}</style>
+<script src="shared-core.js"></script>
+<script>
+(async () => {
+  const params = new URLSearchParams(location.search);
+  const base = params.get('base');
+  const standalone = params.get('standalone') === '1';
+  const petId = params.get('petId');
+  try {
+    const response = await fetch(base + '/config', { cache: 'no-store' });
+    if (!response.ok) throw new Error('读取设置失败');
+    const config = await response.json();
+    const pet = config.main.pets.find(p => p.id === petId);
+    if (!pet) throw new Error('未找到桌宠');
+    PetShared.mountSizeEditor({ size: pet.size, onSize: async size => {
+      const url = standalone ? new URL(base).origin + '/api/settings' : base + '/size';
+      const response = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(standalone ? { size } : { petId, size }) });
+      if (!response.ok) throw new Error('保存大小失败');
+    }, onClose: () => window.close() });
+  } catch (error) { document.body.style.color = '#fff'; document.body.textContent = error.message; }
+})();
+</script></html>
