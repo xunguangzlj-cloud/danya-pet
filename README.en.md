@@ -8,7 +8,7 @@
 
 ## 🚀 Quick start
 
-Download `DanyaPet-Setup.exe`, `合并素材.exe`, and all three `danya-assets.dat.00*` parts from Releases into one folder. Run `合并素材.exe`, click “合并素材” to join and verify the payload, then “启动安装” to start the installer. For a complete local package, keep the installer and `角色素材.dat` together. Then follow the Chinese wizard, and start the pet from the desktop shortcut. The default destination is the current user's `AppData\Local\Programs\DanyaPet` directory. Administrator privileges are not required.
+Download `DanyaPet-Setup.exe`, `MergeAssets.exe`, and all three `danya-assets.dat.00*` parts from Releases into one folder. Run `MergeAssets.exe`, click “合并素材” to join and verify the payload, then “启动安装” to start the installer. For a complete local package, keep the installer and `角色素材.dat` together. Then follow the Chinese wizard, and start the pet from the desktop shortcut. The default destination is the current user's `AppData\Local\Programs\DanyaPet` directory. Administrator privileges are not required.
 
 The installer bundles Electron. Desktop playback works offline without Node, Python, DSH, an AI account, API keys, or a subscription. This distribution targets Windows x64; macOS, mobile and Linux installers are not supplied.
 
