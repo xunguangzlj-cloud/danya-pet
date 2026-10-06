@@ -18,7 +18,7 @@
 
 ## 🚀 快速开始（桌面安装）
 
-1. 在 [Release](https://github.com/xunguangzlj-cloud/danya-pet/releases/latest) 下载 `DanyaPet-Setup.exe`、`MergeAssets.exe` 和三个 `danya-assets.dat.00*` 分卷，放到同一个文件夹。
+1. 在 [Release](https://github.com/xunguangzlj-cloud/danya-pet/releases/latest) 下载 `DanyaPet-Setup.exe`、`MergeAssets.exe` 和三个 `danya-assets.dat.00*` 分卷，放到同一个文件夹。（or让AI直接帮你装）
 2. 双击 `MergeAssets.exe`，点击“合并素材”，完成后点击“启动安装”。若你拿到的是完整本地安装包，直接将安装程序与 `角色素材.dat` 放在一起启动安装。默认安装到当前用户的 `AppData\Local\Programs\DanyaPet`，无需管理员权限。
 3. 完成页可直接启动；之后双击桌面上的「达妮娅桌宠」。
 
