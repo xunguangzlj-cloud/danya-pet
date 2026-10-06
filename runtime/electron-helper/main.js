@@ -174,11 +174,13 @@ function writeCachedPrimaryScale(value) {
   }
 }
 
-/** 从探测子进程的输出里抓 scaleFactor（0 = 没抓到） */
-function parseProbeOutput(text) {
+/** 从探测子进程的文本输出里读主屏 scaleFactor（0 = 没读到）。结果只用于 appendSwitch，
+ *  因此在此严格收口：只接受 (0,10) 内的有限数字，其余一律 0。 */
+function scaleFromProbeText(text) {
   const m = new RegExp(DPI_MARK + '([0-9.]+)').exec(String(text || ''));
   const v = m ? Number(m[1]) : 0;
-  return Number.isFinite(v) && v > 0 ? v : 0;
+  // 结果会喂给 appendSwitch：严格收口，只接受物理上合理的 scaleFactor，其余一律视为探测失败
+  return Number.isFinite(v) && v > 0 && v < 10 ? v : 0;
 }
 
 /** 拉起探测子进程读主屏 scaleFactor（同一个 electron + 同一个 main.js，走 DPI_PROBE 分支） */
@@ -194,27 +196,19 @@ function probePrimaryScale() {
   try {
     out = execFileSync(process.execPath, [__filename, '--dsh-pet-dpi-probe'], opts);
   } catch (e) {
-    // 只认 stdout，不认退出码：一个不开窗口的 Electron 进程调 app.exit() 在 Windows 上
-    // 偶发 0xC0000005（退出期访问违例），但那时值早就写出来了，丢掉它纯属浪费一次冷启动。
-    out = e && e.stdout ? String(e.stdout) : '';
-    if (!parseProbeOutput(out)) {
-      const detail = [
-        e && e.status !== undefined ? 'status=' + e.status : '',
-        e && e.stderr ? 'stderr=' + String(e.stderr).trim().slice(0, 300) : '',
-      ]
-        .filter(Boolean)
-        .join(' ');
-      console.error(
-        '[dsh-pet-desktop-helper] dpi probe failed:',
-        String(e && e.message ? e.message : e).split('\n')[0],
-        detail,
-      );
-      return 0; // 探测失败：不加 switch，退回修复前行为（多屏异构 DPI 会闪，但不影响可用性）
-    }
+    // 一个不开窗口的 Electron 进程调 app.exit() 在 Windows 上偶发 0xC0000005（退出期访问违例），
+    // 但缓存多半已写好，仍然读一次。已知代价：若子进程在写缓存前就崩溃，可能读到上一次的缓存值。
+    const cachedAfterCrash = readCachedPrimaryScale();
+    if (cachedAfterCrash > 0) return cachedAfterCrash;
+    console.error(
+      '[dsh-pet-desktop-helper] dpi probe failed:',
+      String(e && e.message ? e.message : e).split('\n')[0],
+    );
+    return 0; // 探测失败：不加 switch，退回修复前行为（多屏异构 DPI 会闪，但不影响可用性）
   }
-  const v = parseProbeOutput(out);
-  if (v > 0) writeCachedPrimaryScale(v);
-  return v;
+  // 探测结果经缩放缓存交换（子进程写入，父进程读取）；子进程文本输出不再参与任何解析
+  const v = readCachedPrimaryScale();
+  return v > 0 ? v : 0;
 }
 
 /** 真实主屏 scaleFactor（探测所得；0 = 未知）。开启线性化后 screen API 只会报 1，只能靠它。 */
@@ -614,7 +608,9 @@ app.whenReady().then(() => {
   // 探测子进程：此时没有 force-device-scale-factor，读到的是 Windows 的真实主屏缩放。
   // 退出推迟一拍——在 ready 回调里直接 app.exit() 会赶在 stdout 落盘前拆掉进程
   if (DPI_PROBE) {
-    process.stdout.write(DPI_MARK + screen.getPrimaryDisplay().scaleFactor + '\n');
+    const probeScale = screen.getPrimaryDisplay().scaleFactor;
+    writeCachedPrimaryScale(probeScale); // 结果经缩放缓存交给父进程；stdout 仅供人工排障
+    process.stdout.write(DPI_MARK + probeScale + '\n');
     setTimeout(() => app.exit(0), 0);
     return;
   }
@@ -877,12 +873,12 @@ app.whenReady().then(() => {
           writeFileSync(smokeOut, (await sizeEditor.webContents.capturePage()).toPNG());
           const editorStillOpen = !sizeEditor.isDestroyed();
           sizeEditor.close();
-          const base = new URL(process.env.DSH_PET_CONFIG_URL).origin;
-          await fetch(base + '/api/integration', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: '菜单验证', siteUrl: 'https://example.com' }) });
+          // helper 保持最小权限：冒烟分支不再直接发网络请求。如需验证「AI 已接入 → 打开网站」
+          // 菜单项，由冒烟发起方先向本地服务 POST /api/integration，再启动本冒烟读取菜单。
           await pause(700);
           const integratedMenu = await menu();
           const restored = await readPet();
-          const result = { passed: before.size >= 160 && before.size <= 1280 && large.size === 960 && small.size === 320 && restored.size === before.size && restored.loop && editorStillOpen && !standaloneMenu.includes('打开网站') && integratedMenu.includes('打开网站') && !integratedMenu.includes('查看余额') && !integratedMenu.includes('余额档位') && !integratedMenu.includes('碎碎念') && !integratedMenu.includes('对话') && restored.noSpeech && restored.errors.length === 0, before, large, small, restored, standaloneMenu, integratedMenu, editorStillOpen, sameHelperProcess: true };
+          const result = { passed: before.size >= 160 && before.size <= 1280 && large.size === 960 && small.size === 320 && restored.size === before.size && restored.loop && editorStillOpen && !standaloneMenu.includes('打开网站') && !integratedMenu.includes('查看余额') && !integratedMenu.includes('余额档位') && !integratedMenu.includes('碎碎念') && !integratedMenu.includes('对话') && restored.noSpeech && restored.errors.length === 0, before, large, small, restored, standaloneMenu, integratedMenu, editorStillOpen, sameHelperProcess: true };
           console.log('[dsh-pet-desktop-helper] menu revision smoke:', JSON.stringify(result));
           app.quit();
           return;

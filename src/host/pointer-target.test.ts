@@ -22,7 +22,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const helper = '../../runtime/electron-helper/';
 const { HIT_BOX, CANVAS_H, STAGE_W, POINTER_POLL_MS, spriteHitRect, decideWindowIgnore } = require(
-  helper + 'pointer-target.js',
+  '../../runtime/electron-helper/pointer-target.js',
 );
 
 /** 包内文件源码（守卫用；相对 src/host/ 解析） */

@@ -3,6 +3,8 @@ node_modules/
 运行时/
 assets/webm/
 assets/fonts/
+lib/
+.mimosa/
 *.log
 *.dat
 *.exe

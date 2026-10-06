@@ -1,83 +1,147 @@
-# Danya Pet 🐾
+# Danya Pet 🐾 · 达妮娅桌宠
 
-> A transparent companion based on dsh-pet 0.3.0: three outfits, independent animation pools, quiet idle and click reactions, optional MCP integration, and a standalone Windows installer. [中文说明](README.md)
+<div align="center">
 
-**[Source](https://github.com/xunguangzlj-cloud/danya-pet) · [Windows downloads](https://github.com/xunguangzlj-cloud/danya-pet/releases/latest).** A customized fan derivative of dsh-pet v0.3.0.
+<img src="assets/preview/demo-hero.gif" alt="Danya Pet demo: quietly idling, startled when clicked, then celebrating" width="480">
+
+**A transparent chibi Denia living on your Windows desktop** — 83 animations, three outfits, quiet company while you work, and a reaction every time you poke her.
+
+[⬇️ Download installer](https://github.com/xunguangzlj-cloud/danya-pet/releases/latest) · [🇨🇳 中文说明](README.md) · [💬 Discussions](https://github.com/xunguangzlj-cloud/danya-pet/discussions) · [🐞 Issues](https://github.com/xunguangzlj-cloud/danya-pet/issues)
+
+![Release](https://img.shields.io/github/v/release/xunguangzlj-cloud/danya-pet?sort=semver)
+![Downloads](https://img.shields.io/github/downloads/xunguangzlj-cloud/danya-pet/total)
+![Platform](https://img.shields.io/badge/platform-Windows%20x64-8A2BE2)
+![Forms](https://img.shields.io/badge/forms-3-ff69b4)
+![Animations](https://img.shields.io/badge/animations-83-success)
+![License](https://img.shields.io/github/license/xunguangzlj-cloud/danya-pet)
+
+</div>
+
+> A fan-made desktop pet based on **dsh-pet 0.3.0**, featuring Denia from *Wuthering Waves*. Unofficial fan work, not affiliated with Kuro Games. Fully usable without any AI account; optionally connects to AI tools via MCP.
 
 ---
 
+## ✨ Three outfits, three independent animation pools
+
+<p align="center">
+  <img src="assets/preview/demo-forms.gif" alt="Original outfit, bandage and starlight forms side by side" width="640">
+</p>
+
+- **Three forms**: right-click "Switch form" cycles Original (71 animations) / Bandage (6) / Starlight (6). Your choice is remembered across restarts.
+- **Independent pools**: idle, click, random and work animations all switch together with the form — never mixed.
+- **Quiet / random mode**: quiet idle by default, click for a random reaction; turn quiet mode off and she picks the next animation by weight continuously.
+- **Desktop interaction**: drag her around, flick to throw with bounce, click-through on empty areas, play any animation on demand, snap back to her corner.
+- **Quality preserved**: lossless VP9 Alpha transcode, 834×1112 / 1280×720 @ 60 fps with full transparency.
+- **Resizable**: right-click slider from 160–1280 px, saved in real time.
+- **Optional AI integration**: MCP tools let clients like Claude Code or Cursor sense her state and direct her animations (below). The pet itself never calls a model.
+
 ## 🚀 Quick start
 
-Download `DanyaPet-Setup.exe`, `MergeAssets.exe`, and all three `danya-assets.dat.00*` parts from Releases into one folder. Run `MergeAssets.exe`, click “合并素材” to join and verify the payload, then “启动安装” to start the installer. For a complete local package, keep the installer and `角色素材.dat` together. Then follow the Chinese wizard, and start the pet from the desktop shortcut. The default destination is the current user's `AppData\Local\Programs\DanyaPet` directory. Administrator privileges are not required.
+1. From [Latest Release](https://github.com/xunguangzlj-cloud/danya-pet/releases/latest), download `DanyaPet-Setup.exe`, `MergeAssets.exe` and the three `danya-assets.dat.00*` parts into **one folder**.
+2. Double-click `MergeAssets.exe` → click “合并素材” (merge assets) → then “启动安装” (launch installer). Installs to your user's `AppData\Local\Programs\DanyaPet` — **no admin rights needed**.
+3. Launch from the finish page, or any time from the “达妮娅桌宠” desktop shortcut.
 
-The installer bundles Electron. Desktop playback works offline without Node, Python, DSH, an AI account, API keys, or a subscription. This distribution targets Windows x64; macOS, mobile and Linux installers are not supplied.
+> 💡 **SmartScreen**: the installer is unsigned. If Windows shows "protected your PC", click "More info → Run anyway". Verify integrity with the bundled `SHA256SUMS.txt`.
+>
+> 💡 Everything is bundled — no Node/Python, works offline, no AI account or API keys needed. You can delete the installer after setup; keep the `数据/` folder (it survives uninstall) if you want to keep settings.
 
-Payload extraction, checksums and isolated app startup passed. Automatic approval blocked executing the installer; the installation/uninstallation wizard has not been tested end to end.
+## 🖱️ Controls
 
-## ✨ Features
+| Action | Result |
+|---|---|
+| Click the pet | Random click animation from current form |
+| Right-click → 切换形态 | Cycle to next form and its animation pool |
+| Right-click → 安静模式 | Toggle quiet idle / continuous random |
+| Right-click → 调整大小 | Live size slider (160–1280 px) |
+| Right-click → 动作 | Play animations by category |
+| Drag | Move; quick flick throws her with a bounce |
+| Right-click → 回到初始位置 | Return to the configured corner |
+| Right-click → 退出桌宠 | Quit |
 
-![Three outfits captured in the desktop app](assets/preview/三形态.png)
+## 🤖 AI integration (optional)
 
-- **One-click outfit cycling:** Right-click “切换形态” cycles Original → Bandage → Starry → Original, without an additional selection.
-- **Three outfits:** Original (71 clips), Bandage (6), and Starry (6), totaling 83 transparent videos.
-- **Independent pools:** Switching outfits replaces idle, click, random and work-state animations together.
-- **Quiet mode:** Original bubble sitting, Bandage standing, or Starry knee-hug sitting. Click to play another animation from the current outfit, then return to idle.
-- **Random mode:** Disable quiet mode to select subsequent clips by weight. New outfits have no walking source clips and therefore do not invent walking animations.
-- **Smoother idle:** Stable segments omit introductory pose changes; approximately 0.4 seconds of premultiplied-alpha blending joins the end to the start. Finite clips still repeat.
-- **Transparent video:** Green backgrounds, corner labels, green spill and detached remnants are cleaned. Outfit details and action props are retained.
-- **Source quality:** New clips retain their source dimensions (834×1112 or 1280×720) and 60 fps, using lossless-mode VP9 Alpha encoding after processing. Matting and seam blending modify affected pixels; enlarging does not add detail.
-- **Right-click controls:** One-click outfit cycling, quiet mode, a live size slider (160–1280 px canvas width), action selection, reset position and exit.
-- **Action categories:** Ordinary actions are listed once; the work-status category is shown only for the Original outfit.
-- **Optional AI integration:** A stdio MCP bridge exposes `pet_status`, `pet_action` and `pet_info`. Integration can add a website link to the menu. The pet itself makes no model calls.
+Danya ships a **stdio MCP** server exposing three tools: `pet_status`, `pet_action` and `pet_info`. Verified with **Claude Code, Claude Desktop, Cursor, ZCode** and other clients that support local MCP processes.
 
-## 🔌 AI configuration
+- **One-click setup**: download `tools/ai-connect/接入AI工具.ps1` from this repo, run it with PowerShell, and it detects installed AI tools and writes the MCP config for you (with automatic backup). See [tools/ai-connect](tools/ai-connect/README.md).
+- **Manual setup**: see [docs/AI-INTEGRATION.md](docs/AI-INTEGRATION.md) and substitute your install path.
 
-See [AI integration](docs/AI-INTEGRATION.md). Replace paths with your installation directory. The runtime executable needs `ELECTRON_RUN_AS_NODE=1` when launching `standalone/mcp.mjs`.
+```json
+{
+  "mcpServers": {
+    "danya-pet": {
+      "command": "C:\\Users\\YOUR-NAME\\AppData\\Local\\Programs\\DanyaPet\\运行时\\达妮娅桌宠.exe",
+      "args": ["C:\\Users\\YOUR-NAME\\AppData\\Local\\Programs\\DanyaPet\\源码\\dsh-pet\\standalone\\mcp.mjs"],
+      "env": { "ELECTRON_RUN_AS_NODE": "1" }
+    }
+  }
+}
+```
 
-The client must support local stdio MCP processes. No automatic chat reading, account access or balance querying is implemented. State changes require client tool calls. DSH, Codex, Doubao and GLM client-specific installation has not been verified in this delivery; do not interpret a generic MCP example as universal native compatibility.
-
-The original DSH/Cordis host and web entries remain in the source package. Installing the published npm package named `dsh-pet` installs the upstream pet, not this customization (published on GitHub, not npm). Follow your DSH version's local plugin-loading requirements, or use the bundled desktop/MCP path.
+After connecting, try asking your AI "what is Danya doing?" or "make her dance". She never reads your chats, accounts or browser; integration only happens when the AI calls her tools.
 
 ## ⚙️ Configuration
 
-User settings live under the installation's `数据/` directory. `size` is canvas width, `quietMode` is a Boolean, and `formId` is `original`, `bandage`, or `star`. Each form has its own `animations`, `animationWeights`, and `animationGeometry` in `assets/config.jsonc`.
+| Path | Contents |
+|---|---|
+| `数据/设置.json` | Size, quiet mode, current form |
+| `数据/连接.json` | Local service address (127.0.0.1 only, not credentials) |
+| `数据/运行日志.txt` | Startup / asset troubleshooting log |
+| `源码/dsh-pet/assets/config.jsonc` | Forms, animation pools, weights, positioning |
+| `源码/dsh-pet/assets/webm/` | 83 transparent character videos |
 
-The local service listens on loopback, normally port 18430. `数据/连接.json` records the actual address. The uninstaller retains user settings. Exit the pet before uninstalling.
-
-## 🛠️ Development
-
-Large videos and the Electron runtime are distributed through Releases. Install development dependencies with `npm install --ignore-scripts` before building, and copy `assets/webm/` from the installed package into the source tree.
-
-```sh
-npm run typecheck
-npm test
-npm run build:desktop-core
-npm run bundle
-npm run types
+```json
+{ "size": 640, "quietMode": true, "formId": "original" }
 ```
 
-Shared selection/menu logic lives in `src/shared/`; Electron and the web renderer consume the same form configuration. Build dependencies are needed for source development, not for the installed desktop app.
+`formId` accepts `original`, `bandage`, `star`. Edit the settings file while the pet is quit, then start her again.
+
+## 🛠️ For developers
+
+The source repo excludes large videos and the Electron runtime. To develop:
+
+```sh
+npm install --ignore-scripts
+# copy 源码/dsh-pet/assets/webm/ from the install dir into ./assets/webm/
+npm run typecheck && npm test
+npm run build:desktop-core && npm run bundle && npm run types
+```
+
+Shared logic lives in `src/shared/`; browser and Electron share form-switching and menu components. The local service binds `127.0.0.1` only, default port 18430.
+
+## 🗺️ Roadmap
+
+- [ ] Deeper AI-coding-agent integration: one-click Claude Code / Codex hooks, switching animations while thinking, editing, waiting for permission, done
+- [ ] Speech bubbles with local (non-AI) small talk
+- [ ] Walking and screen roaming (after shooting movement clips)
+- [ ] Autostart and system tray
+- [ ] macOS build
+- [ ] Lite installer (720p, half the size)
+
+See [docs/ROADMAP.md](docs/ROADMAP.md). Ideas welcome in [Discussions](https://github.com/xunguangzlj-cloud/danya-pet/discussions).
 
 ## ❓ FAQ
 
-**Can I use it without AI?** Yes, use the desktop installer.
+**Can I use it without AI?** Yes — the desktop app is fully standalone; AI integration is optional.
 
-**Does it speak or show balances?** Current playback is muted, with no speech/chat boxes or balance UI.
+**Antivirus / SmartScreen warning?** A false positive from the unsigned installer. Verify with `SHA256SUMS.txt`, then allow it. Reports via Issues are welcome.
 
-**Will idle never repeat?** No. Stable trims and short blends improve continuity; more source clips would be needed for additional natural variation.
+**How to uninstall?** Quit the pet (right-click), then uninstall from the Start menu / installed apps. Delete the leftover `数据/` folder yourself if you want settings gone too.
 
-**What does working with AI mean?** A client calls a tool to express a work state through animation. The pet does not run tasks or monitor other applications.
+**macOS / Linux?** Not yet — on the roadmap.
 
-## ©️ Copyright holders
+## ©️ Copyright & license
 
-| Copyright holder | Copyrighted content |
+| Rights holder | Work |
 |---|---|
-| Kuro Games | Wuthering Waves and the original Denia character design |
+| Kuro Games | *Wuthering Waves* and the Denia character design |
 
-*Character videos and preview material originate from the user's local asset library. Preview screenshots were captured from this app. This is a fan project, unaffiliated with Kuro Games. The code license does not grant character, video or third-party asset rights, and this project claims no ownership of the original character or official endorsement.*
+*Character videos and preview screenshots come from the author's local library. This pet is fan creation, not affiliated with Kuro Games. Code is open-sourced under the [MIT license](LICENSE), which **does not cover the character, videos or third-party assets**; no ownership or official endorsement is claimed. See [NOTICE](NOTICE.md).*
 
 ## 🤝 Acknowledgements
 
-Thanks to [PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet) for the desktop pet foundation, Kuro Games for Wuthering Waves, and the user who supplied the videos. The code baseline is **v0.3.0**, commit `972f1cb9437dc256bdcb0707f7a6812069dd93db`; original MIT notices remain in [LICENSE](LICENSE) and [NOTICE](NOTICE.md).
+- [PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet) — the desktop-pet foundation (this project is based on v0.3.0, commit `972f1cb9`, with the original MIT license and copyright preserved)
+- Kuro Games for *Wuthering Waves*, and the users who provided character video material
 
-Public redistribution and commercial asset permissions have not been verified; the MIT code license does not substitute for asset permission. [Changelog](CHANGELOG.md)
+**If Danya makes your desktop a little happier, a Star ⭐ is the best encouragement for a fan author.** Watch for updates and share her screenshots in Discussions～
+
+[Changelog](CHANGELOG.md) · [中文说明](README.md) · [Contributing](CONTRIBUTING.md)

@@ -1,11 +1,20 @@
 ﻿using System;
 using System.IO;
-using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.ComponentModel;
 using System.Windows.Forms;
 
 class MergeAssets {
+    [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+    private static extern IntPtr ShellExecuteW(IntPtr hwnd, string verb, string file, string parameters, string directory, int showCmd);
+
+    // 交给 shell 打开安装程序（语义同 Process.Start + UseShellExecute = true）
+    private static void ShellExecuteOpen(string file, string workingDir) {
+        IntPtr result = ShellExecuteW(IntPtr.Zero, "open", file, null, workingDir, 1);
+        if ((long)result <= 32) MessageBox.Show("启动安装程序失败，请手动双击 DanyaPet-Setup.exe。");
+    }
+
     static string BaseDir = AppDomain.CurrentDomain.BaseDirectory;
     static string Target = Path.Combine(BaseDir, "角色素材.dat");
     static string Expected = "a81028237338230678eabb07298b2a79772ea27da101d65b0694d55e19e0660a";
@@ -61,7 +70,9 @@ class MergeAssets {
             if (!ready) { busy = true; button.Enabled = false; label.Text = "正在合并并校验，请稍候……\n大约需要额外 4 GB 磁盘空间。"; worker.RunWorkerAsync(); return; }
             string installer = Path.Combine(BaseDir, "DanyaPet-Setup.exe");
             if (!File.Exists(installer)) { MessageBox.Show("缺少 DanyaPet-Setup.exe，请将安装程序放到此目录。"); return; }
-            Process.Start(new ProcessStartInfo(installer) { UseShellExecute = true }); form.Close();
+            // 路径由本目录常量拼出；Windows 路径不允许出现引号，显式校验后再启动
+            if (installer.Contains("\"")) { MessageBox.Show("路径包含非法字符，已拒绝启动安装程序。"); return; }
+            ShellExecuteOpen(installer, BaseDir); form.Close();
         };
         form.FormClosing += delegate(object sender, FormClosingEventArgs e) { if (busy) { e.Cancel = true; label.Text = "正在合并，请完成后再关闭窗口。"; } };
         form.Controls.AddRange(new Control[] { label, bar, button }); Application.Run(form); return 0;

@@ -29,7 +29,9 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const helper = '../../runtime/electron-helper/';
-const { HOST_POLL_MS, parseHostPid, hostIsGone, isBrokenPipeError } = require(helper + 'host-liveness.js');
+const { HOST_POLL_MS, parseHostPid, hostIsGone, isBrokenPipeError } = require(
+  '../../runtime/electron-helper/host-liveness.js',
+);
 
 /** 包内文件源码（守卫用；相对 src/host/ 解析） */
 const readSource = (rel: string): string => readFileSync(fileURLToPath(new URL(rel, import.meta.url)), 'utf8');
