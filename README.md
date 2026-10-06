@@ -141,7 +141,7 @@ npm run types
 
 感谢 [PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet) 提供桌宠基础实现。本项目基于 **v0.3.0**，基准 commit `972f1cb9437dc256bdcb0707f7a6812069dd93db`；保留原作者 MIT 许可与版权声明。感谢 Kuro Games 的「鸣潮」原作，以及提供角色视频素材的用户。
 
-制作不易，请友友们给个star或到淘宝/咸鱼搜同名项目支持一下~
+制作不易，请友友们给个star或到淘宝/咸鱼搜达妮娅windows桌宠支持一下~
 不定时更新，欢迎提意见~
 
 代码许可与第三方声明见 [LICENSE](LICENSE)、[NOTICE](NOTICE.md)。角色视频的公开再分发及商业授权范围尚未核实，不以 MIT 代码许可替代素材授权。
