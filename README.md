@@ -4,8 +4,6 @@
 
 <img src="assets/preview/demo-hero.gif" alt="达妮娅桌宠演示：安静待机，被点击后惊讶，随即开心庆祝" width="480">
 
-**一只住在 Windows 桌面上的达妮娅** —— 透明 Q 版形象、83 个动作、三种形态，安静陪你干活，点一下就有回应。
-
 [⬇️ 下载安装包](https://github.com/xunguangzlj-cloud/danya-pet/releases/latest) · [🇬🇧 English](README.en.md) · [💬 讨论区](https://github.com/xunguangzlj-cloud/danya-pet/discussions) · [🐞 问题反馈](https://github.com/xunguangzlj-cloud/danya-pet/issues)
 
 ![Release](https://img.shields.io/github/v/release/xunguangzlj-cloud/danya-pet?sort=semver&label=%E7%89%88%E6%9C%AC)
