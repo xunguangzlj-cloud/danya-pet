@@ -140,6 +140,6 @@ npm run build:desktop-core && npm run bundle && npm run types
 - [PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet) —— 桌宠基础实现（本项目基于 v0.3.0，commit `972f1cb9`，保留原作者 MIT 许可与版权声明）
 - Kuro Games 的《鸣潮》原作，以及提供角色视频素材的用户
 
-**如果达妮娅可爱到你了，点个 Star ⭐ 就是对同人作者最大的鼓励**，也欢迎 Watch 关注更新、到 Discussions 晒她的桌面照～
+**点个 Star ⭐吧~
 
 [更新记录](CHANGELOG.md) · [英文说明](README.en.md) · [参与贡献](CONTRIBUTING.md)
