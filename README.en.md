@@ -34,6 +34,7 @@
 - **Quality preserved**: lossless VP9 Alpha transcode, 834×1112 / 1280×720 @ 60 fps with full transparency.
 - **Resizable**: right-click slider from 160–1280 px, saved in real time.
 - **Optional AI integration**: MCP tools let clients like Claude Code or Cursor sense her state and direct her animations (below). The pet itself never calls a model.
+- **Tray & autostart**: the standalone build lives in the system tray — toggle "start with Windows" and quit cleanly from the tray menu.
 
 ## 🚀 Quick start
 
@@ -63,6 +64,7 @@
 Danya ships a **stdio MCP** server exposing three tools: `pet_status`, `pet_action` and `pet_info`. Verified with **Claude Code, Claude Desktop, Cursor, ZCode** and other clients that support local MCP processes.
 
 - **One-click setup**: download `tools/ai-connect/接入AI工具.ps1` from this repo, run it with PowerShell, and it detects installed AI tools and writes the MCP config for you (with automatic backup). See [tools/ai-connect](tools/ai-connect/README.md).
+- **Coding-agent hooks**: run `tools/ai-hooks/接入编程助手.ps1` to wire Claude Code / Codex / ZCode hook events straight to the pet — she thinks when you submit a prompt, works while tools run, waits for approvals and idles when the turn ends. No AI action needed.
 - **Manual setup**: see [docs/AI-INTEGRATION.md](docs/AI-INTEGRATION.md) and substitute your install path.
 
 ```json

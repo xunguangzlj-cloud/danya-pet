@@ -45,10 +45,10 @@ try {
   );
   process.exit(3);
 }
-const { app, BrowserWindow, ipcMain, screen, shell, protocol, dialog } = electronApi;
+const { app, BrowserWindow, ipcMain, screen, shell, protocol, dialog, Tray, Menu, nativeImage } = electronApi;
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
-const { readFileSync, writeFileSync } = require('node:fs');
+const { readFileSync, writeFileSync, existsSync } = require('node:fs');
 const fsPromises = require('node:fs/promises');
 // 点击穿透兜底通道的纯判定（不依赖 Electron 的 forward 鼠标钩子；见文件头注释）
 const { decideWindowIgnore } = require('./pointer-target.js');
@@ -604,6 +604,47 @@ async function handleBridgeRequest(request) {
   return new Response(resp.body ?? '', { status: resp.status || 200, headers });
 }
 
+/** 数据目录（独立版由 server.mjs 经 DANYA_DATA 传入） */
+function dataDir() {
+  return process.env.DANYA_DATA || '';
+}
+
+/** 开机自启的目标：优先安装根目录的启动器（它负责拉起服务+helper）；开发目录没有启动器则用当前可执行文件 */
+function autostartTarget() {
+  const launcher = path.resolve(__dirname, '..', '..', '..', '启动达妮娅桌宠.exe');
+  return existsSync(launcher) ? launcher : process.execPath;
+}
+
+let tray = null;
+/** 独立版托盘：开机自启开关 + 退出（写 退出.flag，由 server.mjs 收尾整个进程组） */
+function setupTray() {
+  const icon = nativeImage.createFromPath(path.join(__dirname, 'tray-icon.png'));
+  if (icon.isEmpty()) return; // 图标缺失（如开发目录）则不建托盘
+  tray = new Tray(icon);
+  tray.setToolTip('达妮娅桌宠');
+  tray.setContextMenu(Menu.buildFromTemplate([
+    {
+      label: '开机自启',
+      type: 'checkbox',
+      checked: app.getLoginItemSettings({ path: autostartTarget() }).openAtLogin,
+      click: (item) => {
+        app.setLoginItemSettings({ path: autostartTarget(), openAtLogin: item.checked });
+      },
+    },
+    { type: 'separator' },
+    {
+      label: '退出桌宠',
+      click: () => {
+        try {
+          const dir = dataDir();
+          if (dir) writeFileSync(path.join(dir, '退出.flag'), new Date().toISOString(), 'utf8');
+        } catch { /* 写不了标志文件就只退出 helper */ }
+        app.quit();
+      },
+    },
+  ]));
+}
+
 app.whenReady().then(() => {
   // 探测子进程：此时没有 force-device-scale-factor，读到的是 Windows 的真实主屏缩放。
   // 退出推迟一拍——在 ready 回调里直接 app.exit() 会赶在 stdout 落盘前拆掉进程
@@ -640,6 +681,9 @@ app.whenReady().then(() => {
   }
 
   createPetWindows();
+
+  // 托盘与开机自启（仅独立桌面版有安装根目录概念；宿主模式有宿主自己的托盘；冒烟分支不建托盘）
+  if (process.env.DANYA_STANDALONE === '1' && process.env.DSH_PET_SMOKE !== '1') setupTray();
 
   // 宠物窗口跟随：renderer 逐帧上报窗口内容区位置/尺寸
   ipcMain.on('pet:set-bounds', (event, bounds) => {

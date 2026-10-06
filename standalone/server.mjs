@@ -1,5 +1,5 @@
 import { createServer } from 'node:http';
-import { createReadStream, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { createReadStream, existsSync, mkdirSync, readFileSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
@@ -67,7 +67,19 @@ function launchHelper() {
   });
   helper.stderr.on('data', chunk => writeFileSync(log, chunk, { flag: 'a' }));
   helper.on('error', error => writeFileSync(log, error.message, { flag: 'a' }));
-  helper.on('exit', () => { helperReady = false; });
+  helper.on('exit', () => {
+    helperReady = false;
+    // 托盘「退出桌宠」协议：helper 写 退出.flag 后自行退出，这里收尾整个进程组
+    try {
+      const flag = join(data, '退出.flag');
+      if (existsSync(flag)) {
+        unlinkSync(flag);
+        helper?.kill();
+        server.close();
+        process.exit(0);
+      }
+    } catch { /* 标志文件不可读时按普通退出处理 */ }
+  });
 }
 async function route(req, res) {
   const url = new URL(req.url, 'http://127.0.0.1');

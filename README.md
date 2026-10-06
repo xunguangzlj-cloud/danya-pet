@@ -32,6 +32,7 @@
 - **画质保留**：VP9 Alpha 无损转码，834×1112 / 1280×720 @60fps，透明通道完整。
 - **右键调整大小**：160–1280 px 实时滑杆，等比缩放即时保存。
 - **可选 AI 联动**：通过 MCP 让 Claude Code、Cursor 等 AI 工具感知她的状态、指挥她做动作（见下文），桌宠本身不调用任何模型。
+- **托盘常驻与开机自启**：独立桌面版常驻系统托盘，右键托盘图标可开关「开机自启」、干净退出。
 
 ## 🚀 快速开始
 
@@ -61,6 +62,7 @@
 达妮娅内置 **stdio MCP** 服务，提供 `pet_status`（状态）、`pet_action`（动作）、`pet_info`（信息）三个工具。已验证可用于：**Claude Code、Claude Desktop、Cursor、ZCode** 及其他支持本地 MCP 进程的客户端。
 
 - **一键接入**：下载仓库 `tools/ai-connect/接入AI工具.ps1`，右键「使用 PowerShell 运行」，自动检测已安装的 AI 工具并写入 MCP 配置（修改前自动备份）。详见 [tools/ai-connect](tools/ai-connect/README.md)。
+- **编程助手 Hook 联动**：运行 `tools/ai-hooks/接入编程助手.ps1`，把 Claude Code / Codex / ZCode 的 hook 事件接到桌宠——提交提示词她就思考、跑工具就干活、等批准就等待、结束回待机，无需 AI 主动调用。
 - **手动配置**：见 [docs/AI-INTEGRATION.md](docs/AI-INTEGRATION.md)，把安装路径代入 JSON 即可。
 
 ```json

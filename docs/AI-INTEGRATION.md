@@ -35,6 +35,24 @@
 
 `text` 仅作状态记录，不显示说话框。桌宠不调用模型、不读取账户、不查询余额。关闭 AI 后，已启动的独立桌宠继续运行；右键退出才结束桌面服务。
 
+## 编程助手 Hook 联动（事件驱动，无需 AI 主动调用）
+
+除了 MCP 主动调用，编程助手还可以通过 **hook 事件**驱动桌宠：AI 一提交提示词她就进入思考、跑工具时进入工作、等批准时等待、结束时回待机——全程零交互。事件桥是零依赖脚本 `tools/ai-hooks/pet-hook.mjs`，把事件映射为 `POST /api/event` 到本机桌宠服务，失败静默、绝不阻塞助手。
+
+**一键安装**：运行 `tools/ai-hooks/接入编程助手.ps1`（撤销加 `-Remove`），自动写入并备份以下三处配置：
+
+| 工具 | 配置位置 | 机制 |
+|---|---|---|
+| Claude Code | `~/.claude/settings.json` 的 `hooks` | stdin 事件 JSON → 状态 |
+| Codex CLI | `~/.codex/config.toml` 的 `notify` | 事件 JSON 作为参数 → 状态 |
+| ZCode | `~/.zcode/cli/config.json` 的 `hooks.events` | 事件名参数 + stdin JSON → 状态 |
+
+事件映射：提交提示词 → `thinking`；工具执行 → `working`；需要批准/通知 → `waiting`；工具失败 → `error`（ZCode）；回合结束/会话结束 → `idle`。
+
+**手动接入**：任意支持进程 hook 的工具，执行 `node <路径>/tools/ai-hooks/pet-hook.mjs <claude|codex|zcode>`，事件 JSON 走 stdin（Codex 走最后一个参数）即可。端口默认 18430，可用环境变量 `DANYA_PET_PORT` 覆盖。
+
 ## English
 
 Configure a local stdio MCP server using the bundled runtime executable, `standalone/mcp.mjs`, and `ELECTRON_RUN_AS_NODE=1`. Optional `DANYA_AI_NAME` and `DANYA_SITE_URL` provide a menu label and website address. Call `pet_info` before choosing an animation. `pet_status` expresses a client-supplied work state; the pet does not observe conversations automatically. Client-specific DSH/Doubao/Codex/GLM setup remains unverified.
+
+**Coding-agent hooks (event-driven)**: run `tools/ai-hooks/接入编程助手.ps1` to register a zero-dependency bridge (`tools/ai-hooks/pet-hook.mjs`) into Claude Code hooks, Codex `notify`, or ZCode `hooks.events`. Agent events map to work states (prompt → thinking, tools → working, approval → waiting, failure → error, turn end → idle) via a local `POST /api/event`; failures are silent and never block the agent. Override the port with `DANYA_PET_PORT`.
