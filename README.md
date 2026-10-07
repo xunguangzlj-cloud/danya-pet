@@ -145,3 +145,12 @@ npm run build:desktop-core && npm run bundle && npm run types
 **点个 Star ⭐吧~
 
 [更新记录](CHANGELOG.md) · [英文说明](README.en.md) · [参与贡献](CONTRIBUTING.md)
+
+## 支持作者
+
+如果这些项目对你有帮助的话，给个star吧~也可以投喂作者一杯奶茶（比心）
+
+<p>
+  <a href="assets/donate/alipay.jpg"><img src="assets/donate/alipay.jpg" alt="支付宝收款码" width="300"></a>
+  <a href="assets/donate/wechat.jpg"><img src="assets/donate/wechat.jpg" alt="微信收款码" width="300"></a>
+</p>

@@ -147,3 +147,12 @@ See [docs/ROADMAP.md](docs/ROADMAP.md). Ideas welcome in [Discussions](https://g
 **If Danya makes your desktop a little happier, a Star ⭐ is the best encouragement for a fan author.** Watch for updates and share her screenshots in Discussions～
 
 [Changelog](CHANGELOG.md) · [中文说明](README.md) · [Contributing](CONTRIBUTING.md)
+
+## 支持作者
+
+如果这些项目对你有帮助的话，给个star吧~也可以投喂作者一杯奶茶（比心）
+
+<p>
+  <a href="assets/donate/alipay.jpg"><img src="assets/donate/alipay.jpg" alt="支付宝收款码" width="300"></a>
+  <a href="assets/donate/wechat.jpg"><img src="assets/donate/wechat.jpg" alt="微信收款码" width="300"></a>
+</p>
