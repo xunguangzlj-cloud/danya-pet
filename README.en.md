@@ -148,6 +148,15 @@ See [docs/ROADMAP.md](docs/ROADMAP.md). Ideas welcome in [Discussions](https://g
 
 [Changelog](CHANGELOG.md) · [中文说明](README.md) · [Contributing](CONTRIBUTING.md)
 
+## ⬇️ Baidu Netdisk download (complete installer)
+
+[Download Danya Pet · 20261007 update](https://pan.baidu.com/s/1oERgVsV16X-_CLaKoicwLA?pwd=tqjh) · Extraction code: **tqjh**
+
+- **File**: `达妮娅桌宠-Windows完整安装包-v0.3.1-20261007.zip`, approximately **4.15 GB**. The share is valid for **365 days**, created on October 7, 2026.
+- **Complete desktop package**: includes the installer, bundled runtime and all **83 character videos**. No split-file merging, Node/Python installation or AI configuration is needed.
+- **Installation**: download the entire ZIP → extract it into one folder → keep `达妮娅桌宠-安装程序.exe` and `角色素材.dat` together → run the installer → launch “达妮娅桌宠” using the desktop shortcut.
+- **Updating**: quit the previous pet first, then install into the same directory. Existing settings in `数据/` are preserved.
+
 ## 支持作者
 
 如果这些项目对你有帮助的话，给个star吧~也可以投喂作者一杯奶茶（比心）
